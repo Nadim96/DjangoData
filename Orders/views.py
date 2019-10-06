@@ -48,6 +48,7 @@ def EditOrderForm(request, pk):
 
 def UploadCsv(request):
     template = "Orders/upload.html"
+    test = "Orders/index.html"
 
     prompt = {
         'order': "Correct csv order: order_name, order_description, order_price, order_amount, order_date"
@@ -72,5 +73,5 @@ def UploadCsv(request):
             order_amount=column[3],
             order_date=column[4]
         )
-    context = {}
-    return render(request, "Orders/index.html", context)
+    context = {'order': "csv file has been uploaded!"}
+    return render(request, template, context)
