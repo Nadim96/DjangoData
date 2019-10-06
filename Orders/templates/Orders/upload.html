@@ -1,0 +1,27 @@
+{% extends "Orders/header.html" %}
+
+{% block content %}
+
+{% if message %}
+    {% for message in messages %}
+        <div>
+            {{message|safe}}
+        </div>
+    {% endfor %}
+{% else %}
+
+{{order}}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Upload csv file</label>
+    <input type="file" name="file">
+    <button type="submit">Upload csv</button>
+</form>
+
+{% endif %}
+
+
+
+
+{% endblock %}
+

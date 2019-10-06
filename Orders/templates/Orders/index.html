@@ -1,5 +1,91 @@
 {% extends "Orders/header.html" %}
+{% load mathfilters %}
 
 {% block content %}
-    <p> List of orders </p>
+
+<table class="table" id="myTable">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Date</th>
+      <th scope="col">Total</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for order in Orders %}
+    <tr>
+      <th scope="row">{{ order.id }}</th>
+      <td>{{ order.order_name }}</td>
+      <td>{{ order.order_description }}</td>
+      <td>{{ order.order_price }}</td>
+      <td>{{ order.order_amount }}</td>
+      <td>{{ order.order_date }}</td>
+      <td>€{{ order.order_price|mul:order.order_amount }}</td>
+      <td>
+        <a href="{% url 'orders:edit_order' order.id %}" type="submit" class="btn"><button>edit</button></a>
+        <a href="{% url 'orders:delete_order' order.id %}" type="submit" class="btn"><button>delete</button></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<button onclick="myFunction()">Add new Product</button>
+
+<script>
+var token = '{{csrf_token}}';
+var html = '<tr><th scope="row"></th>' +
+        '<td><input type="text" name="product_name"></td>' +
+        '<td><input type="text" name="order_description"></td>' +
+        '<td><input type="text" name="order_price"></td>' +
+        '<td><input type="text" name="order_amount"></td>' +
+        '<td><input type="text" name="order_date" placeholder="0000-00-00"></td>' +
+        '<td></td>' +
+        '<td><button id="fetchValues">Save product</button></td></tr>'
+var rowCount = 0;
+
+function myFunction() {
+  if(rowCount === 0 ){
+    rowCount++
+    $('#myTable > tbody:last-child').append(html);
+
+    $('#fetchValues').click(function () {
+
+     var product_name = $('input[name="product_name"]').val()
+     var order_description = $('input[name="order_description"]').val()
+     var order_price = $('input[name="order_price"]').val()
+     var order_amount = $('input[name="order_amount"]').val()
+     var order_date = $('input[name="order_date"]').val()
+
+      $.ajax({
+        headers: { "X-CSRFToken": token },
+        type: "POST",
+        url: "/add_order/",
+        data: {
+          product_name:product_name,
+          order_description:order_description,
+          order_price:order_price,
+          order_amount:order_amount,
+          order_date:order_date
+        },
+        success: function() {
+            rowCount = 0
+            window.location='/'
+        },
+           error: function(data){
+            alert("Please fill in the form in correctly");
+        }
+      })
+    }
+  )}else{}
+
+}
+</script>
+
+
 {% endblock %}
+

@@ -16,7 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from . import views
 
+app_name = 'orders'
+
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^add_order$', views.AddOrder, name='add_order')
+    url(r'^edit_order/(?P<pk>[0-9]+)/$', views.EditOrder, name='edit_order'),
+    url(r'^add_order/$', views.AddOrderForm, name='add_order'),
+    url(r'^delete_order/(?P<pk>[0-9]+)/$', views.DeleteOrder, name='delete_order'),
+    url(r'^edit_order_form/(?P<pk>[0-9]+)/$', views.EditOrderForm, name='edit_order_form'),
+    url(r'^upload_csv/$', views.UploadCsv, name='upload_csv')
 ]

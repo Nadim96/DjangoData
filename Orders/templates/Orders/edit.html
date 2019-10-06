@@ -1,0 +1,23 @@
+{% extends "Orders/header.html" %}
+{% load mathfilters %}
+
+{% block content %}
+
+
+<form method="post" action="{% url 'orders:edit_order_form' Orders.pk %}">
+    {% csrf_token %}
+    Product Name:<br>
+    <input type="text" name="product_name" value="{{Orders.order_name}}" placeholder="product_name"><br>
+    Order Description:<br>
+    <input type="text" name="order_description" value="{{Orders.order_description}}" placeholder="order_description"><Br>
+    Order Price:<br>
+    <input type="text" name="order_price" value="{{Orders.order_price}}" placeholder="order_price"><br>
+    Order Amount:<br>
+    <input type="text" name="order_amount" value="{{Orders.order_amount}}" placeholder="order_amount"><br>
+    <button type="text">Save</button>
+</form>
+
+
+
+{% endblock %}
+
